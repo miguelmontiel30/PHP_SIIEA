@@ -1,29 +1,41 @@
 <?php
 
+require 'Database.php';
+
     try{
 
-        require_once('Conexion.php');
+        $consulta="select CURDATE()";
 
-        $sql_query = "SELECT CURDATE();";
+        $comando = Database::getInstance()->getDb()->prepare($consulta);
 
-         $result = $conexion->query($sql_query);
+        $comando->execute();
 
-        $rows = array();
+        $row = $comando->fetchAll(PDO::FETCH_ASSOC);
 
-        while($r = mysqli_fetch_assoc($result)) {
-
-          $rows[] = $r;
-
-    }
-
-    print json_encode($rows);
+    
 
     }catch(\Exception $e){
 
         echo $e->getMessage();
 
+    }    
+
+    if($row){
+
+        $datos["fecha"] = $row;
+
+        print json_encode($datos);   
+
+    } else {
+
+        print json_encode(array(
+
+            "estado" => 2,
+
+            "mensaje" => "Ha ocurrido un error"
+
+        ));
+
     }
 
-    $conexion->close();
-
-    ?>
+?>
