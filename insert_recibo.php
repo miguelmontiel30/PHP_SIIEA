@@ -1,15 +1,12 @@
 <?php
 require 'Database.php';
 
-    $id_user = $_GET['id_user'];
-    $fecha = $_GET['fecha'];
-    
     try{
-        $consulta=("call insert_recibo(?,?)");
+        $consulta=("Select CURDATE();");
         $comando = Database::getInstance()->getDb()->prepare($consulta);
-        $comando->execute(array($id_user,$fecha));
+        $row = $comando->execute(array());
+        
     }catch(\Exception $e){
         echo $e->getMessage();
-    }
-    echo 'Primer Fecha asignada';
+    }    
 ?>
